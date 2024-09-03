@@ -102,6 +102,15 @@ type Base64Embedding struct {
 	Index     int          `json:"index"`
 }
 
+// NewBase64Embedding creates a new Base64Embedding with the given object, embedding, and index.
+func NewBase64Embedding(object string, embedding string, index int) Base64Embedding {
+	return Base64Embedding{
+		Object:    object,
+		Embedding: base64String(embedding),
+		Index:     index,
+	}
+}
+
 // EmbeddingResponseBase64 is the response from a Create embeddings request with base64 encoding format.
 type EmbeddingResponseBase64 struct {
 	Object string            `json:"object"`
