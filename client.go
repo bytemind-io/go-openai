@@ -27,10 +27,6 @@ type Response interface {
 
 type httpHeader http.Header
 
-func NewHttpHeader(header http.Header) httpHeader {
-	return httpHeader(header)
-}
-
 func (h *httpHeader) SetHeader(header http.Header) {
 	*h = httpHeader(header)
 }
