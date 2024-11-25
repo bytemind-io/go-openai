@@ -15,7 +15,6 @@ var (
 
 var (
 	ErrO1BetaLimitationsMessageTypes = errors.New("this model has beta-limitations, user and assistant messages only, system messages are not supported")                                  //nolint:lll
-	ErrO1BetaLimitationsStreaming    = errors.New("this model has beta-limitations, streaming not supported")                                                                              //nolint:lll
 	ErrO1BetaLimitationsTools        = errors.New("this model has beta-limitations, tools, function calling, and response format parameters are not supported")                            //nolint:lll
 	ErrO1BetaLimitationsLogprobs     = errors.New("this model has beta-limitations, logprobs not supported")                                                                               //nolint:lll
 	ErrO1BetaLimitationsOther        = errors.New("this model has beta-limitations, temperature, top_p and n are fixed at 1, while presence_penalty and frequency_penalty are fixed at 0") //nolint:lll
@@ -161,7 +160,23 @@ func checkEndpointSupportsModel(endpoint, model string) bool {
 func checkPromptType(prompt any) bool {
 	_, isString := prompt.(string)
 	_, isStringSlice := prompt.([]string)
-	return isString || isStringSlice
+	if isString || isStringSlice {
+		return true
+	}
+
+	// check if it is prompt is []string hidden under []any
+	slice, isSlice := prompt.([]any)
+	if !isSlice {
+		return false
+	}
+
+	for _, item := range slice {
+		_, itemIsString := item.(string)
+		if !itemIsString {
+			return false
+		}
+	}
+	return true // all items in the slice are string, so it is []string
 }
 
 var unsupportedToolsForO1Models = map[ToolType]struct{}{
@@ -183,12 +198,6 @@ func validateRequestForO1Models(request ChatCompletionRequest) error {
 		return ErrO1MaxTokensDeprecated
 	}
 
-	// Beta Limitations
-	// refs:https://platform.openai.com/docs/guides/reasoning/beta-limitations
-	// Streaming: not supported
-	if request.Stream {
-		return ErrO1BetaLimitationsStreaming
-	}
 	// Logprobs: not supported.
 	if request.LogProbs {
 		return ErrO1BetaLimitationsLogprobs
@@ -241,18 +250,20 @@ type CompletionRequest struct {
 	LogitBias map[string]int `json:"logit_bias,omitempty"`
 	// Store can be set to true to store the output of this completion request for use in distillations and evals.
 	// https://platform.openai.com/docs/api-reference/chat/create#chat-create-store
-	Store           bool     `json:"store,omitempty"`
-	LogProbs        int      `json:"logprobs,omitempty"`
-	MaxTokens       int      `json:"max_tokens,omitempty"`
-	N               int      `json:"n,omitempty"`
-	PresencePenalty float32  `json:"presence_penalty,omitempty"`
-	Seed            *int     `json:"seed,omitempty"`
-	Stop            []string `json:"stop,omitempty"`
-	Stream          bool     `json:"stream,omitempty"`
-	Suffix          string   `json:"suffix,omitempty"`
-	Temperature     float32  `json:"temperature,omitempty"`
-	TopP            float32  `json:"top_p,omitempty"`
-	User            string   `json:"user,omitempty"`
+	Store bool `json:"store,omitempty"`
+	// Metadata to store with the completion.
+	Metadata        map[string]string `json:"metadata,omitempty"`
+	LogProbs        int               `json:"logprobs,omitempty"`
+	MaxTokens       int               `json:"max_tokens,omitempty"`
+	N               int               `json:"n,omitempty"`
+	PresencePenalty float32           `json:"presence_penalty,omitempty"`
+	Seed            *int              `json:"seed,omitempty"`
+	Stop            []string          `json:"stop,omitempty"`
+	Stream          bool              `json:"stream,omitempty"`
+	Suffix          string            `json:"suffix,omitempty"`
+	Temperature     float32           `json:"temperature,omitempty"`
+	TopP            float32           `json:"top_p,omitempty"`
+	User            string            `json:"user,omitempty"`
 }
 
 // CompletionChoice represents one of possible completions.
