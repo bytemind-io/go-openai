@@ -41,6 +41,7 @@ type CreateSpeechRequest struct {
 	Voice          SpeechVoice          `json:"voice"`
 	ResponseFormat SpeechResponseFormat `json:"response_format,omitempty"` // Optional, default to mp3
 	Speed          float64              `json:"speed,omitempty"`           // Optional, default to 1.0
+	Language       string               `json:"language,omitempty"`        // todo: 新增
 }
 
 func (c *Client) CreateSpeech(ctx context.Context, request CreateSpeechRequest) (response RawResponse, err error) {

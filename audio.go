@@ -49,6 +49,7 @@ type AudioRequest struct {
 	Language               string // Only for transcription.
 	Format                 AudioResponseFormat
 	TimestampGranularities []TranscriptionTimestampGranularity // Only for transcription.
+	AudioBase64            string                              `json:"audio_base64,omitempty"`
 }
 
 // AudioResponse represents a response structure for audio API.
