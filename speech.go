@@ -2,7 +2,10 @@ package openai
 
 import (
 	"context"
+	"errors"
+	"math"
 	"net/http"
+	"strconv"
 )
 
 type SpeechModel string
@@ -35,6 +38,20 @@ const (
 	SpeechResponseFormatPcm  SpeechResponseFormat = "pcm"
 )
 
+type FloatFrac float64
+
+func (f FloatFrac) MarshalJSON() ([]byte, error) {
+	n := float64(f)
+	if math.IsInf(n, 0) || math.IsNaN(n) {
+		return nil, errors.New("unsupported number")
+	}
+	prec := -1
+	if math.Trunc(n) == n {
+		prec = 1 // Force ".0" for integers.
+	}
+	return strconv.AppendFloat(nil, n, 'f', prec, 64), nil
+}
+
 type CreateSpeechRequest struct {
 	Model              SpeechModel          `json:"model"`
 	Input              string               `json:"input"`
@@ -43,7 +60,7 @@ type CreateSpeechRequest struct {
 	Speed              float64              `json:"speed,omitempty"`                 // Optional, default to 1.0
 	Language           string               `json:"language,omitempty"`              // todo: 新增
 	ReferWavPathGpt    string               `json:"refer_wav_path_gpt,omitempty"`    // 参考音频
-	ReferWavPathSovits map[string]float32   `json:"refer_wav_path_sovits,omitempty"` // 融合音频
+	ReferWavPathSovits map[string]FloatFrac `json:"refer_wav_path_sovits,omitempty"` // 融合音频
 }
 
 func (c *Client) CreateSpeech(ctx context.Context, request CreateSpeechRequest) (response RawResponse, err error) {

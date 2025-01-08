@@ -96,3 +96,14 @@ func TestSpeechIntegration(t *testing.T) {
 		checks.NoError(t, err, "Create error")
 	})
 }
+
+func TestCreateSpeechRequest(t *testing.T) {
+	req := openai.CreateSpeechRequest{
+		ReferWavPathSovits: map[string]openai.FloatFrac{
+			"test": 0,
+		},
+	}
+
+	body, _ := json.Marshal(req)
+	fmt.Println(body)
+}
