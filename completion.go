@@ -187,7 +187,7 @@ type CompletionRequest struct {
 	Stop            []string          `json:"stop,omitempty"`
 	Stream          bool              `json:"stream,omitempty"`
 	Suffix          string            `json:"suffix,omitempty"`
-	Temperature     float32           `json:"temperature,omitempty"`
+	Temperature     *float32          `json:"temperature,omitempty"`
 	TopP            float32           `json:"top_p,omitempty"`
 	User            string            `json:"user,omitempty"`
 }
