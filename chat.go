@@ -268,6 +268,28 @@ type ChatCompletionRequest struct {
 	ReasoningEffort string `json:"reasoning_effort,omitempty"`
 	// Metadata to store with the completion.
 	Metadata map[string]string `json:"metadata,omitempty"`
+	// ExtraBody to store extra model specific to claude3.7 thinking.[https://docs.anthropic.com/en/api/openai-sdk]
+	ExtraBody *ExtraBody `json:"extra_body,omitempty"`
+}
+
+/*
+	response = client.chat.completions.create(
+    model="claude-3-7-sonnet-20250219",
+    messages=...,
+    extra_body={
+        "thinking": { "type": "enabled", "budget_tokens": 2000 }
+    }
+)
+*/
+
+// ExtraBody is a structure to store extra information in the request.
+type ExtraBody struct {
+	Thinking *Thinking `json:"thinking,omitempty"`
+}
+
+type Thinking struct {
+	Type         string `json:"type"`
+	BudgetTokens int    `json:"budget_tokens"`
 }
 
 type StreamOptions struct {
