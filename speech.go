@@ -61,6 +61,7 @@ type CreateSpeechRequest struct {
 	Language           string               `json:"language,omitempty"`              // todo: 新增
 	ReferWavPathGpt    string               `json:"refer_wav_path_gpt,omitempty"`    // 参考音频
 	ReferWavPathSovits map[string]FloatFrac `json:"refer_wav_path_sovits,omitempty"` // 融合音频
+	Prompt             string               `json:"prompt,omitempty"`                // 音频样本文本
 }
 
 func (c *Client) CreateSpeech(ctx context.Context, request CreateSpeechRequest) (response RawResponse, err error) {
