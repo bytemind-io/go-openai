@@ -52,16 +52,6 @@ func (f FloatFrac) MarshalJSON() ([]byte, error) {
 	return strconv.AppendFloat(nil, n, 'f', prec, 64), nil
 }
 
-// VoiceType is the voice type.[默认音色类型]
-type VoiceType int
-
-const (
-	// TTS is the default TTS.
-	TTS VoiceType = iota // 默认TTS
-	// Clone is the clone TTS.
-	Clone // 克隆版TTS
-)
-
 type CreateSpeechRequest struct {
 	Model              SpeechModel          `json:"model"`
 	Input              string               `json:"input"`
@@ -71,8 +61,6 @@ type CreateSpeechRequest struct {
 	Language           string               `json:"language,omitempty"`              // todo: 新增
 	ReferWavPathGpt    string               `json:"refer_wav_path_gpt,omitempty"`    // 参考音频
 	ReferWavPathSovits map[string]FloatFrac `json:"refer_wav_path_sovits,omitempty"` // 融合音频
-	Prompt             string               `json:"prompt,omitempty"`                // 音频样本文本
-	Type               VoiceType            `json:"type,omitempty"`                  // 区分下是正常的TTS还是克隆版TTS | 接口不一样
 }
 
 func (c *Client) CreateSpeech(ctx context.Context, request CreateSpeechRequest) (response RawResponse, err error) {
