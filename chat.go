@@ -94,7 +94,7 @@ type ChatMessagePart struct {
 
 type ChatCompletionMessage struct {
 	Role             string `json:"role"`
-	Content          string `json:"content,omitempty"`
+	Content          string `json:"content"`
 	ReasoningContent string `json:"reasoning_content,omitempty"`
 	Refusal          string `json:"refusal,omitempty"`
 	MultiContent     []ChatMessagePart
@@ -135,7 +135,7 @@ func (m ChatCompletionMessage) MarshalJSON() ([]byte, error) {
 
 	msg := struct {
 		Role             string            `json:"role"`
-		Content          string            `json:"content,omitempty"`
+		Content          string            `json:"content"`
 		ReasoningContent string            `json:"reasoning_content,omitempty"`
 		Refusal          string            `json:"refusal,omitempty"`
 		MultiContent     []ChatMessagePart `json:"-"`
@@ -150,7 +150,7 @@ func (m ChatCompletionMessage) MarshalJSON() ([]byte, error) {
 func (m *ChatCompletionMessage) UnmarshalJSON(bs []byte) error {
 	msg := struct {
 		Role             string `json:"role"`
-		Content          string `json:"content,omitempty"`
+		Content          string `json:"content"`
 		ReasoningContent string `json:"reasoning_content,omitempty"`
 		Refusal          string `json:"refusal,omitempty"`
 		MultiContent     []ChatMessagePart
