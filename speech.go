@@ -57,8 +57,10 @@ type CreateSpeechRequest struct {
 	Input              string               `json:"input"`
 	Voice              SpeechVoice          `json:"voice"`
 	ResponseFormat     SpeechResponseFormat `json:"response_format,omitempty"`       // Optional, default to mp3
-	Speed              float64              `json:"speed,omitempty"`                 // Optional, default to 1.0
+	Speed              float64              `json:"speed,omitempty"`                 // Optional, default to 1.0 [0.5-2.0]
 	Language           string               `json:"language,omitempty"`              // todo: 新增
+	Volume             int                  `json:"volume,omitempty"`                // 音量【0 -10】，默认1
+	Pitch              int                  `json:"pitch,omitempty"`                 // 语调【-12， 12】，默认0
 	ReferWavPathGpt    string               `json:"refer_wav_path_gpt,omitempty"`    // 参考音频
 	ReferWavPathSovits map[string]FloatFrac `json:"refer_wav_path_sovits,omitempty"` // 融合音频
 }
