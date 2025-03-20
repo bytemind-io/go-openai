@@ -57,6 +57,7 @@ type CreateSpeechRequest struct {
 	Input              string               `json:"input"`
 	Voice              SpeechVoice          `json:"voice"`
 	ResponseFormat     SpeechResponseFormat `json:"response_format,omitempty"`       // Optional, default to mp3
+	Stream             bool                 `json:"stream,omitempty"`                // Optional, default to false
 	Speed              float64              `json:"speed,omitempty"`                 // Optional, default to 1.0 [0.5-2.0]
 	Language           string               `json:"language,omitempty"`              // todo: 新增
 	Volume             int                  `json:"volume,omitempty"`                // 音量【0 -10】，默认1
