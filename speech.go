@@ -53,17 +53,16 @@ func (f FloatFrac) MarshalJSON() ([]byte, error) {
 }
 
 type CreateSpeechRequest struct {
-	Model              SpeechModel          `json:"model"`
-	Input              string               `json:"input"`
-	Voice              SpeechVoice          `json:"voice"`
-	ResponseFormat     SpeechResponseFormat `json:"response_format,omitempty"`       // Optional, default to mp3
-	Stream             bool                 `json:"stream,omitempty"`                // Optional, default to false
-	Speed              float64              `json:"speed,omitempty"`                 // Optional, default to 1.0 [0.5-2.0]
-	Language           string               `json:"language,omitempty"`              // todo: 新增
-	Volume             int                  `json:"volume,omitempty"`                // 音量【0 -10】，默认1
-	Pitch              int                  `json:"pitch,omitempty"`                 // 语调【-12， 12】，默认0
-	ReferWavPathGpt    string               `json:"refer_wav_path_gpt,omitempty"`    // 参考音频
-	ReferWavPathSovits map[string]FloatFrac `json:"refer_wav_path_sovits,omitempty"` // 融合音频
+	Model          SpeechModel          `json:"model"`
+	Input          string               `json:"input"`
+	Voice          SpeechVoice          `json:"voice"`
+	ResponseFormat SpeechResponseFormat `json:"response_format,omitempty"` // Optional, default to mp3
+	Stream         bool                 `json:"stream,omitempty"`          // Optional, default to false
+	Speed          float64              `json:"speed,omitempty"`           // Optional, default to 1.0 [0.5-2.0]
+	Language       string               `json:"language,omitempty"`        // todo: 新增
+	Volume         int                  `json:"volume,omitempty"`          // 音量【0 -10】，默认1
+	Pitch          int                  `json:"pitch,omitempty"`           // 语调【-12， 12】，默认0
+	TimberWeights  map[string]FloatFrac `json:"timber_weights,omitempty"`  // 融合音色权重列表
 }
 
 func (c *Client) CreateSpeech(ctx context.Context, request CreateSpeechRequest) (response RawResponse, err error) {
