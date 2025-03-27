@@ -53,6 +53,7 @@ type ClientConfig struct {
 
 func NewProviderConfig(authToken string) ClientConfig {
 	cfg := DefaultConfig(authToken)
+	cfg.APIType = APITypeProvider
 	cfg.APIProviderDisableContentCheck = "true"
 	cfg.APIProviderDisableLiterature = "true"
 	return cfg
