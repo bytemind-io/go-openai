@@ -189,15 +189,20 @@ func (c *Client) setCommonHeaders(req *http.Request) {
 	case APITypeAnthropic:
 		// https://docs.anthropic.com/en/api/versioning
 		req.Header.Set("anthropic-version", c.config.APIVersion)
-	case APITypeProvider:
-		req.Header.Set("disable-tts-checks", c.config.APIProviderDisableContentCheck)
-		req.Header.Set("disable-bracket-literature", c.config.APIProviderDisableLiterature)
 	case APITypeOpenAI, APITypeAzureAD:
 		fallthrough
 	default:
 		if c.config.authToken != "" {
 			req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", c.config.authToken))
 		}
+	}
+
+	if c.config.APIProviderDisableContentCheck != "" {
+		req.Header.Set("disable-tts-checks", c.config.APIProviderDisableContentCheck)
+	}
+
+	if c.config.APIProviderDisableLiterature != "" {
+		req.Header.Set("disable-bracket-literature", c.config.APIProviderDisableLiterature)
 	}
 
 	if c.config.OrgID != "" {

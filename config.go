@@ -23,7 +23,6 @@ const (
 	APITypeAzureAD         APIType = "AZURE_AD"
 	APITypeCloudflareAzure APIType = "CLOUDFLARE_AZURE"
 	APITypeAnthropic       APIType = "ANTHROPIC"
-	APITypeProvider        APIType = "PROVIDER"
 )
 
 const AzureAPIKeyHeader = "api-key"
@@ -53,7 +52,6 @@ type ClientConfig struct {
 
 func NewProviderConfig(authToken string) ClientConfig {
 	cfg := DefaultConfig(authToken)
-	cfg.APIType = APITypeProvider
 	cfg.APIProviderDisableContentCheck = "true"
 	cfg.APIProviderDisableLiterature = "true"
 	return cfg
