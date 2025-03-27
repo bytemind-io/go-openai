@@ -51,6 +51,13 @@ type ClientConfig struct {
 	EmptyMessagesLimit uint
 }
 
+func NewProviderConfig(authToken string) ClientConfig {
+	cfg := DefaultConfig(authToken)
+	cfg.APIProviderDisableContentCheck = "true"
+	cfg.APIProviderDisableLiterature = "true"
+	return cfg
+}
+
 func DefaultConfig(authToken string) ClientConfig {
 	return ClientConfig{
 		authToken:        authToken,
