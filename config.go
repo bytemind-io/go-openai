@@ -23,6 +23,7 @@ const (
 	APITypeAzureAD         APIType = "AZURE_AD"
 	APITypeCloudflareAzure APIType = "CLOUDFLARE_AZURE"
 	APITypeAnthropic       APIType = "ANTHROPIC"
+	APITypeProvider        APIType = "PROVIDER"
 )
 
 const AzureAPIKeyHeader = "api-key"
@@ -37,13 +38,15 @@ type HTTPDoer interface {
 type ClientConfig struct {
 	authToken string
 
-	BaseURL              string
-	OrgID                string
-	APIType              APIType
-	APIVersion           string // required when APIType is APITypeAzure or APITypeAzureAD or APITypeAnthropic
-	AssistantVersion     string
-	AzureModelMapperFunc func(model string) string // replace model to azure deployment name func
-	HTTPClient           HTTPDoer
+	BaseURL                        string
+	OrgID                          string
+	APIType                        APIType
+	APIVersion                     string // required when APIType is APITypeAzure or APITypeAzureAD or APITypeAnthropic
+	APIProviderDisableContentCheck string // disable content check for API provider content tts checks. []
+	APIProviderDisableLiterature   string // disable literature for API provider content tts checks. [For parentheses literature]
+	AssistantVersion               string
+	AzureModelMapperFunc           func(model string) string // replace model to azure deployment name func
+	HTTPClient                     HTTPDoer
 
 	EmptyMessagesLimit uint
 }
