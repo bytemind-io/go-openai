@@ -64,6 +64,7 @@ type CreateSpeechRequest struct {
 	Pitch             int                  `json:"pitch,omitempty"`               // 语调【-12， 12】，默认0
 	ReferenceVoiceWav string               `json:"reference_voice_wav,omitempty"` // 参考音频路径
 	TimberWeights     map[string]FloatFrac `json:"timber_weights,omitempty"`      // 融合音色权重列表
+	Bitrate           int                  `json:"bitrate,omitempty"`             // Optional, default to 128000
 }
 
 func (c *Client) CreateSpeech(ctx context.Context, request CreateSpeechRequest) (response RawResponse, err error) {
