@@ -59,12 +59,14 @@ type CreateSpeechRequest struct {
 	ResponseFormat    SpeechResponseFormat `json:"response_format,omitempty"`     // Optional, default to mp3
 	Stream            bool                 `json:"stream,omitempty"`              // Optional, default to false
 	Speed             FloatFrac            `json:"speed,omitempty"`               // Optional, default to 1.0 [0.5-2.0]
-	Language          string               `json:"language,omitempty"`            // todo: 新增
-	Volume            FloatFrac            `json:"volume,omitempty"`              // 音量【0 -10】，默认1
-	Pitch             int                  `json:"pitch,omitempty"`               // 语调【-12， 12】，默认0
+	Language          string               `json:"language,omitempty"`            // 音频语言：zh
+	Volume            FloatFrac            `json:"volume,omitempty"`              // 音频：音量【0 -10】，默认1
+	Pitch             int                  `json:"pitch,omitempty"`               // 音频：语调【-12， 12】，默认0
+	Bitrate           int                  `json:"bitrate,omitempty"`             // 音频码率： Optional, default to 128000
+	SampleRate        int                  `json:"sample_rate,omitempty"`         // 音频采样率： Optional, default to 24000
+	Channel           int                  `json:"channel,omitempty"`             // 音频声道数： Optional, default to 1
 	ReferenceVoiceWav string               `json:"reference_voice_wav,omitempty"` // 参考音频路径
 	TimberWeights     map[string]FloatFrac `json:"timber_weights,omitempty"`      // 融合音色权重列表
-	Bitrate           int                  `json:"bitrate,omitempty"`             // Optional, default to 128000
 }
 
 func (c *Client) CreateSpeech(ctx context.Context, request CreateSpeechRequest) (response RawResponse, err error) {
