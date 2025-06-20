@@ -292,7 +292,7 @@ type ExtraBody struct {
 			# 使用Qwen3开源版模型时，若未启用流式输出，请将下行取消注释，否则会报错
 			# extra_body={"enable_thinking": False},
 	*/
-	EnableThinking bool `json:"enable_thinking"`
+	//EnableThinking bool `json:"enable_thinking"`
 }
 
 type Thinking struct {
