@@ -270,6 +270,8 @@ type ChatCompletionRequest struct {
 	Metadata map[string]string `json:"metadata,omitempty"`
 	// ExtraBody to store extra model specific to claude3.7 thinking.[https://docs.anthropic.com/en/api/openai-sdk]
 	ExtraBody *ExtraBody `json:"extra_body,omitempty"`
+	// EnableThinking is a flag to enable thinking for the model.
+	EnableThinking bool `json:"enable_thinking,omitempty"`
 }
 
 /*
