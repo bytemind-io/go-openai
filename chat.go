@@ -270,6 +270,14 @@ type ChatCompletionRequest struct {
 	Metadata map[string]string `json:"metadata,omitempty"`
 	// ExtraBody to store extra model specific to claude3.7 thinking.[https://docs.anthropic.com/en/api/openai-sdk]
 	ExtraBody *ExtraBody `json:"extra_body,omitempty"`
+	// EnableThinking is a flag to enable thinking for the model.
+	// https://bailian.console.aliyun.com/?spm=5176.29597918.J_bNSze_09Z5SDm7ZHdpz3Y.1.49207b087aADAY&tab=api#/api/?type=model&url=https%3A%2F%2Fhelp.aliyun.com%2Fdocument_detail%2F2712576.html
+	/*
+		# Qwen3模型通过enable_thinking参数控制思考过程（开源版默认True，商业版默认False）
+			# 使用Qwen3开源版模型时，若未启用流式输出，请将下行取消注释，否则会报错
+			# extra_body={"enable_thinking": False},
+	*/
+	EnableThinking *bool `json:"enable_thinking,omitempty"`
 }
 
 /*
@@ -285,14 +293,6 @@ type ChatCompletionRequest struct {
 // ExtraBody is a structure to store extra information in the request.
 type ExtraBody struct {
 	Thinking *Thinking `json:"thinking,omitempty"`
-	// EnableThinking is a flag to enable thinking for the model.
-	// https://bailian.console.aliyun.com/?spm=5176.29597918.J_bNSze_09Z5SDm7ZHdpz3Y.1.49207b087aADAY&tab=api#/api/?type=model&url=https%3A%2F%2Fhelp.aliyun.com%2Fdocument_detail%2F2712576.html
-	/*
-		# Qwen3模型通过enable_thinking参数控制思考过程（开源版默认True，商业版默认False）
-			# 使用Qwen3开源版模型时，若未启用流式输出，请将下行取消注释，否则会报错
-			# extra_body={"enable_thinking": False},
-	*/
-	//EnableThinking bool `json:"enable_thinking"`
 }
 
 type Thinking struct {
