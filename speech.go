@@ -11,20 +11,25 @@ import (
 type SpeechModel string
 
 const (
-	TTSModel1      SpeechModel = "tts-1"
-	TTSModel1HD    SpeechModel = "tts-1-hd"
-	TTSModelCanary SpeechModel = "canary-tts"
+	TTSModel1         SpeechModel = "tts-1"
+	TTSModel1HD       SpeechModel = "tts-1-hd"
+	TTSModelCanary    SpeechModel = "canary-tts"
+	TTSModelGPT4oMini SpeechModel = "gpt-4o-mini-tts"
 )
 
 type SpeechVoice string
 
 const (
 	VoiceAlloy   SpeechVoice = "alloy"
+	VoiceAsh     SpeechVoice = "ash"
+	VoiceBallad  SpeechVoice = "ballad"
+	VoiceCoral   SpeechVoice = "coral"
 	VoiceEcho    SpeechVoice = "echo"
 	VoiceFable   SpeechVoice = "fable"
 	VoiceOnyx    SpeechVoice = "onyx"
 	VoiceNova    SpeechVoice = "nova"
 	VoiceShimmer SpeechVoice = "shimmer"
+	VoiceVerse   SpeechVoice = "verse"
 )
 
 type SpeechResponseFormat string
@@ -56,9 +61,10 @@ type CreateSpeechRequest struct {
 	Model             SpeechModel          `json:"model"`
 	Input             string               `json:"input"`
 	Voice             SpeechVoice          `json:"voice"`
+	Instructions      string               `json:"instructions,omitempty"`        // Optional, Doesnt work with tts-1 or tts-1-hd.
 	ResponseFormat    SpeechResponseFormat `json:"response_format,omitempty"`     // Optional, default to mp3
+	Speed             FloatFrac            `json:"speed,omitempty"`               // Optional, default to 1.0
 	Stream            bool                 `json:"stream,omitempty"`              // Optional, default to false
-	Speed             FloatFrac            `json:"speed,omitempty"`               // Optional, default to 1.0 [0.5-2.0]
 	Language          string               `json:"language,omitempty"`            // 音频语言：zh
 	Volume            FloatFrac            `json:"volume,omitempty"`              // 音频：音量【0 -10】，默认1
 	Pitch             int                  `json:"pitch,omitempty"`               // 音频：语调【-12， 12】，默认0
