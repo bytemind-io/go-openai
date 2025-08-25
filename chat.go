@@ -322,7 +322,8 @@ type ChatCompletionRequest struct {
 	ServiceTier ServiceTier `json:"service_tier,omitempty"`
 	// Embedded struct for non-OpenAI extensions
 	ChatCompletionRequestExtensions
-
+	// Thinking is a structure to store extra information in the request for models that support thinking.
+	Thinking *DouBaoThink `json:"thinking,omitempty"`
 	// ExtraBody to store extra model specific to claude3.7 thinking.[https://docs.anthropic.com/en/api/openai-sdk]
 	ExtraBody *ExtraBody `json:"extra_body,omitempty"`
 	// EnableThinking is a flag to enable thinking for the model.
@@ -348,6 +349,12 @@ type ChatCompletionRequest struct {
 // ExtraBody is a structure to store extra information in the request.
 type ExtraBody struct {
 	Thinking *Thinking `json:"thinking,omitempty"`
+}
+
+// DouBaoThink is a structure to store extra information in the request for DouBao model.
+// https://www.volcengine.com/docs/82379/1449737#fa3f44fa
+type DouBaoThink struct {
+	Type string `json:"type"`
 }
 
 type Thinking struct {
