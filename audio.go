@@ -54,30 +54,59 @@ type AudioRequest struct {
 
 // AudioResponse represents a response structure for audio API.
 type AudioResponse struct {
-	Task     string  `json:"task"`
-	Language string  `json:"language"`
-	Duration float64 `json:"duration"`
-	Segments []struct {
-		ID               int     `json:"id"`
-		Seek             int     `json:"seek"`
-		Start            float64 `json:"start"`
-		End              float64 `json:"end"`
-		Text             string  `json:"text"`
-		Tokens           []int   `json:"tokens"`
-		Temperature      float64 `json:"temperature"`
-		AvgLogprob       float64 `json:"avg_logprob"`
-		CompressionRatio float64 `json:"compression_ratio"`
-		NoSpeechProb     float64 `json:"no_speech_prob"`
-		Transient        bool    `json:"transient"`
-	} `json:"segments"`
-	Words []struct {
-		Word  string  `json:"word"`
-		Start float64 `json:"start"`
-		End   float64 `json:"end"`
-	} `json:"words"`
-	Text string `json:"text"`
+	Task     string         `json:"task"`
+	Language string         `json:"language"`
+	Duration float64        `json:"duration"`
+	Segments []AudioSegment `json:"segments"`
+	Words    []AudioWord    `json:"words"`
+	Text     string         `json:"text"`
+
+	// SenseASR 扩展字段
+	AudioInfo *TranscriptionAudioInfo `json:"audio_info,omitempty"` // 音频元信息
+	Warnings  []string                `json:"warnings,omitempty"`   // 警告信息
+
+	Usage *AudioResponseUsage `json:"usage,omitempty"`
 
 	httpHeader
+}
+
+type AudioResponseUsage struct {
+	Type    string `json:"type"`
+	Seconds int64  `json:"seconds"`
+}
+
+// AudioSegment represents a segment in audio transcription response.
+type AudioSegment struct {
+	ID               int     `json:"id"`
+	Seek             int     `json:"seek"`
+	Start            float64 `json:"start"`
+	End              float64 `json:"end"`
+	Text             string  `json:"text"`
+	Tokens           []int   `json:"tokens"`
+	Temperature      float64 `json:"temperature"`
+	AvgLogprob       float64 `json:"avg_logprob"`
+	CompressionRatio float64 `json:"compression_ratio"`
+	NoSpeechProb     float64 `json:"no_speech_prob"`
+	Transient        bool    `json:"transient"`
+
+	// SenseASR 扩展字段
+	Speaker     string      `json:"speaker,omitempty"`     // 说话人 ID
+	Sentiment   string      `json:"sentiment,omitempty"`   // 情感分析
+	Translation string      `json:"translation,omitempty"` // 翻译结果
+	ExtWords    []AudioWord `json:"ext_words,omitempty"`   // 扩展字级时间戳 (ms)
+}
+
+// AudioWord represents a word in audio transcription response.
+type AudioWord struct {
+	Word  string  `json:"word"`
+	Start float64 `json:"start"`
+	End   float64 `json:"end"`
+}
+
+// TranscriptionAudioInfo 音频元信息（SenseASR 扩展）
+type TranscriptionAudioInfo struct {
+	Duration int    `json:"duration"`         // 音频时长 (ms)
+	Format   string `json:"format,omitempty"` // 音频格式
 }
 
 type audioTextResponse struct {
