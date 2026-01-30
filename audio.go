@@ -90,10 +90,9 @@ type AudioSegment struct {
 	Transient        bool    `json:"transient,omitempty"`
 
 	// SenseASR 扩展字段
-	Speaker     string      `json:"speaker,omitempty"`     // 说话人 ID
-	Sentiment   string      `json:"sentiment,omitempty"`   // 情感分析
-	Translation string      `json:"translation,omitempty"` // 翻译结果
-	ExtWords    []AudioWord `json:"ext_words,omitempty"`   // 扩展字级时间戳 (ms)
+	Speaker     string `json:"speaker,omitempty"`     // 说话人 ID
+	Sentiment   string `json:"sentiment,omitempty"`   // 情感分析
+	Translation string `json:"translation,omitempty"` // 翻译结果
 }
 
 // AudioWord represents a word in audio transcription response.
