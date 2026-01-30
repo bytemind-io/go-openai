@@ -78,16 +78,16 @@ type AudioResponseUsage struct {
 // AudioSegment represents a segment in audio transcription response.
 type AudioSegment struct {
 	ID               int     `json:"id"`
-	Seek             int     `json:"seek"`
+	Seek             int     `json:"seek,omitempty"`
 	Start            float64 `json:"start"`
 	End              float64 `json:"end"`
 	Text             string  `json:"text"`
-	Tokens           []int   `json:"tokens"`
-	Temperature      float64 `json:"temperature"`
-	AvgLogprob       float64 `json:"avg_logprob"`
-	CompressionRatio float64 `json:"compression_ratio"`
-	NoSpeechProb     float64 `json:"no_speech_prob"`
-	Transient        bool    `json:"transient"`
+	Tokens           []int   `json:"tokens,omitempty"`
+	Temperature      float64 `json:"temperature,omitempty"`
+	AvgLogprob       float64 `json:"avg_logprob,omitempty"`
+	CompressionRatio float64 `json:"compression_ratio,omitempty"`
+	NoSpeechProb     float64 `json:"no_speech_prob,omitempty"`
+	Transient        bool    `json:"transient,omitempty"`
 
 	// SenseASR 扩展字段
 	Speaker     string      `json:"speaker,omitempty"`     // 说话人 ID
