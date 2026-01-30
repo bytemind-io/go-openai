@@ -54,8 +54,8 @@ type AudioRequest struct {
 
 // AudioResponse represents a response structure for audio API.
 type AudioResponse struct {
-	Task     string         `json:"task"`
-	Language string         `json:"language"`
+	Task     string         `json:"task,omitempty"`
+	Language string         `json:"language,omitempty"`
 	Duration float64        `json:"duration"`
 	Segments []AudioSegment `json:"segments"`
 	Words    []AudioWord    `json:"words"`
