@@ -487,6 +487,7 @@ type ChatCompletionResponse struct {
 	ServiceTier         ServiceTier            `json:"service_tier,omitempty"`
 
 	httpHeader
+	RawResponse *http.Response
 }
 
 // CreateChatCompletion — API call to Create a completion for the chat message.
@@ -520,6 +521,10 @@ func (c *Client) CreateChatCompletion(
 		return
 	}
 
-	err = c.sendRequest(req, &response)
+	resp, err := c.sendRequestRawResp(req, &response)
+	if err != nil {
+		return response, err
+	}
+	response.RawResponse = resp
 	return
 }

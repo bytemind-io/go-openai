@@ -128,6 +128,11 @@ func (c *Client) newRequest(ctx context.Context, method, url string, setters ...
 }
 
 func (c *Client) sendRequest(req *http.Request, v Response) error {
+	_, err := c.sendRequestRawResp(req, v)
+	return err
+}
+
+func (c *Client) sendRequestRawResp(req *http.Request, v Response) (resp *http.Response, err error) {
 	req.Header.Set("Accept", "application/json")
 
 	// Check whether Content-Type is already set, Upload Files API requires
@@ -139,7 +144,7 @@ func (c *Client) sendRequest(req *http.Request, v Response) error {
 
 	res, err := c.config.HTTPClient.Do(req)
 	if err != nil {
-		return err
+		return resp, err
 	}
 
 	defer res.Body.Close()
@@ -149,10 +154,13 @@ func (c *Client) sendRequest(req *http.Request, v Response) error {
 	}
 
 	if isFailureStatusCode(res) {
-		return c.handleErrorResp(res)
+		return res, c.handleErrorResp(res)
 	}
 
-	return decodeResponse(res.Body, v)
+	if err := decodeResponse(res.Body, v); err != nil {
+		return res, err
+	}
+	return res, nil
 }
 
 func (c *Client) sendRequestRaw(req *http.Request) (response RawResponse, err error) {
