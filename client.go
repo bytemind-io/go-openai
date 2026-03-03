@@ -187,10 +187,14 @@ func sendRequestStream[T streamable](client *Client, req *http.Request) (*stream
 
 	resp, err := client.config.HTTPClient.Do(req) //nolint:bodyclose // body is closed in stream.Close()
 	if err != nil {
-		return new(streamReader[T]), err
+		return &streamReader[T]{
+			RawResponse: resp,
+		}, err
 	}
 	if isFailureStatusCode(resp) {
-		return new(streamReader[T]), client.handleErrorResp(resp)
+		return &streamReader[T]{
+			RawResponse: resp,
+		}, client.handleErrorResp(resp)
 	}
 	return &streamReader[T]{
 		emptyMessagesLimit: client.config.EmptyMessagesLimit,
