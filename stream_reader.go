@@ -54,6 +54,10 @@ func (stream *streamReader[T]) RecvRaw() ([]byte, error) {
 	return stream.processLines()
 }
 
+func (stream *streamReader[T]) Response() *http.Response {
+	return stream.RawResponse
+}
+
 //nolint:gocognit
 func (stream *streamReader[T]) processLines() ([]byte, error) {
 	var (
