@@ -102,6 +102,7 @@ func (c *Client) CreateChatCompletionStream(
 	}
 
 	resp, err := sendRequestStream[ChatCompletionStreamResponse](c, req)
+	setRawResponse(ctx, resp.RawResponse)
 	if err != nil {
 		return &ChatCompletionStream{
 			streamReader: resp,

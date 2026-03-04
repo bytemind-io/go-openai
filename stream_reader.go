@@ -30,7 +30,7 @@ type streamReader[T streamable] struct {
 	unmarshaler    utils.Unmarshaler
 
 	httpHeader
-	RawResponse *http.Response
+	RawResponse *http.Response `json:"-"`
 }
 
 func (stream *streamReader[T]) Recv() (response T, err error) {
@@ -52,10 +52,6 @@ func (stream *streamReader[T]) RecvRaw() ([]byte, error) {
 	}
 
 	return stream.processLines()
-}
-
-func (stream *streamReader[T]) Response() *http.Response {
-	return stream.RawResponse
 }
 
 //nolint:gocognit
