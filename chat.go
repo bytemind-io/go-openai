@@ -27,6 +27,33 @@ var (
 	ErrContentFieldsMisused             = errors.New("can't use both Content and MultiContent properties simultaneously")
 )
 
+// Context key for raw response
+type contextKey string
+
+const rawResponseKey contextKey = "openai_raw_response"
+
+// WithRawResponse returns a new context that will capture the raw HTTP response.
+// Use GetRawResponse to retrieve it after the API call.
+func WithRawResponse(ctx context.Context) context.Context {
+	return context.WithValue(ctx, rawResponseKey, new(*http.Response))
+}
+
+// GetRawResponse retrieves the raw HTTP response from the context.
+// Returns nil if the context was not created with WithRawResponse or if no response has been set yet.
+func GetRawResponse(ctx context.Context) *http.Response {
+	if ptr, ok := ctx.Value(rawResponseKey).(**http.Response); ok && ptr != nil {
+		return *ptr
+	}
+	return nil
+}
+
+// setRawResponse stores the raw response in the context if it was created with WithRawResponse.
+func setRawResponse(ctx context.Context, resp *http.Response) {
+	if ptr, ok := ctx.Value(rawResponseKey).(**http.Response); ok && ptr != nil {
+		*ptr = resp
+	}
+}
+
 type Hate struct {
 	Filtered bool   `json:"filtered"`
 	Severity string `json:"severity,omitempty"`
@@ -487,7 +514,6 @@ type ChatCompletionResponse struct {
 	ServiceTier         ServiceTier            `json:"service_tier,omitempty"`
 
 	httpHeader
-	RawResponse *http.Response
 }
 
 // CreateChatCompletion — API call to Create a completion for the chat message.
@@ -522,9 +548,9 @@ func (c *Client) CreateChatCompletion(
 	}
 
 	resp, err := c.sendRequestRawResp(req, &response)
+	setRawResponse(ctx, resp)
 	if err != nil {
 		return response, err
 	}
-	response.RawResponse = resp
 	return
 }
